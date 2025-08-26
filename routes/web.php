@@ -11,6 +11,45 @@ use Illuminate\Support\Facades\Auth;
 
 Route::get('/', [PublicoController::class, 'index'])->name('home');
 
+// Ruta de diagnóstico temporal para Railway
+Route::get('/railway-status', function () {
+    $info = [
+        'timestamp' => date('Y-m-d H:i:s'),
+        'php_version' => phpversion(),
+        'laravel_version' => app()->version(),
+        'environment' => app()->environment(),
+        'app_key' => config('app.key') ? 'Set (' . strlen(config('app.key')) . ' chars)' : 'Not set',
+        'app_url' => config('app.url'),
+        'db_connection' => config('database.default'),
+        'db_host' => config('database.connections.' . config('database.default') . '.host'),
+        'db_database' => config('database.connections.' . config('database.default') . '.database'),
+        'cache_driver' => config('cache.default'),
+        'session_driver' => config('session.driver'),
+        'queue_driver' => config('queue.default'),
+    ];
+    
+    // Test database connection
+    try {
+        \DB::connection()->getPdo();
+        $info['database_status'] = 'Connected';
+        $info['database_name'] = \DB::connection()->getDatabaseName();
+    } catch (\Exception $e) {
+        $info['database_status'] = 'Error: ' . $e->getMessage();
+    }
+    
+    // Check critical files
+    $files = [
+        'bootstrap/app.php' => file_exists(base_path('bootstrap/app.php')),
+        'config/app.php' => file_exists(base_path('config/app.php')),
+        'vendor/autoload.php' => file_exists(base_path('vendor/autoload.php')),
+        '.env' => file_exists(base_path('.env')),
+    ];
+    
+    $info['critical_files'] = $files;
+    
+    return response()->json($info, 200, [], JSON_PRETTY_PRINT);
+})->name('railway.status');
+
 // Rutas públicas
 Route::get('/', [PublicoController::class, 'index'])->name('publico.index');
 
