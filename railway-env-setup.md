@@ -12,9 +12,9 @@ APP_KEY=base64:b8uZ6ll/okxBhPXI6y0YK1dEsKmY9arfMqjitmemDFI=
 APP_DEBUG=false
 APP_URL=https://web-production-28d0.up.railway.app
 
-# Configuración de Base de Datos PostgreSQL (Railway)
+# Configuración de Base de Datos PostgreSQL (Railway - Endpoint Privado)
 DB_CONNECTION=pgsql
-DB_HOST=${{Postgres.PGHOST}}
+DB_HOST=${{Postgres.RAILWAY_PRIVATE_DOMAIN}}
 DB_PORT=${{Postgres.PGPORT}}
 DB_DATABASE=${{Postgres.PGDATABASE}}
 DB_USERNAME=${{Postgres.PGUSER}}
@@ -54,9 +54,18 @@ FILESYSTEM_DISK=local
 - `APP_DEBUG=false`: Importante para producción
 - `LOG_LEVEL=error`: Reduce logs innecesarios
 
+## ⚠️ Importante - Optimización de Costos:
+
+**USAR ENDPOINTS PRIVADOS**: Railway cobra por tráfico de egress cuando usas endpoints públicos.
+- ✅ **CORRECTO**: `DB_HOST=${{Postgres.RAILWAY_PRIVATE_DOMAIN}}`
+- ❌ **EVITAR**: `DB_HOST=${{Postgres.PGHOST}}` (endpoint público)
+
+Esto evita costos adicionales de egress en Railway.
+
 ## Verificación:
 
 Después de configurar las variables:
 1. Redespliega la aplicación
 2. Verifica que no haya errores 500
 3. Comprueba que la base de datos se conecte correctamente
+4. Confirma que uses endpoints privados para evitar costos
