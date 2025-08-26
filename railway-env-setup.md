@@ -62,6 +62,36 @@ FILESYSTEM_DISK=local
 
 Esto evita costos adicionales de egress en Railway.
 
+## 🔧 Solución para "Database Connection" Colgado:
+
+Si la conexión se queda en "Database Connection" sin avanzar:
+
+### Paso 1: Verificar Variables de Entorno
+```bash
+# En Railway, ve a Variables y confirma:
+DB_CONNECTION=pgsql
+DB_HOST=${{Postgres.RAILWAY_PRIVATE_DOMAIN}}  # ¡IMPORTANTE: Usar endpoint privado!
+DB_PORT=${{Postgres.PGPORT}}
+DB_DATABASE=${{Postgres.PGDATABASE}}
+DB_USERNAME=${{Postgres.PGUSER}}
+DB_PASSWORD=${{Postgres.PGPASSWORD}}
+```
+
+### Paso 2: Verificar Estado del Servicio PostgreSQL
+- En Railway Dashboard → Tu Proyecto → PostgreSQL
+- Confirma que el estado sea "Active" (verde)
+- Si está "Deploying" o "Error", espera o reinicia el servicio
+
+### Paso 3: Scripts de Diagnóstico
+Usa estos archivos para diagnosticar:
+- `test-db-connection.php` - Test directo de conexión
+- `railway-laravel-check.php` - Verificación completa de Laravel
+- `railway-debug.php` - Diagnóstico general
+
+### Paso 4: Forzar Redespliegue
+- En Railway: Settings → Redeploy
+- O hacer un push vacío: `git commit --allow-empty -m "Force redeploy" && git push`
+
 ## Verificación:
 
 Después de configurar las variables:
@@ -69,3 +99,4 @@ Después de configurar las variables:
 2. Verifica que no haya errores 500
 3. Comprueba que la base de datos se conecte correctamente
 4. Confirma que uses endpoints privados para evitar costos
+5. Ejecuta los scripts de diagnóstico si persisten problemas
