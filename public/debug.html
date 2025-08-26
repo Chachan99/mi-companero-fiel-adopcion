@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Railway Debug - HTML Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        h1 { color: #333; }
+        .info { background: #f0f0f0; padding: 10px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>Railway Debug - HTML Test</h1>
+    <div class="info">
+        <p><strong>Status:</strong> HTML file is working correctly</p>
+        <p><strong>Timestamp:</strong> <script>document.write(new Date().toISOString());</script></p>
+        <p><strong>URL:</strong> <script>document.write(window.location.href);</script></p>
+    </div>
+    
+    <h2>Next Steps</h2>
+    <ul>
+        <li>If you see this page, HTML files are working</li>
+        <li>The issue is specifically with PHP file processing</li>
+        <li>Railway's Nginx configuration may not be processing custom PHP files</li>
+        <li>Try accessing: <a href="/test.php">/test.php</a></li>
+        <li>Try accessing: <a href="/railway-debug.php">/railway-debug.php</a></li>
+    </ul>
+    
+    <h2>Possible Solutions</h2>
+    <ol>
+        <li>Check Railway deployment logs for PHP processing errors</li>
+        <li>Verify environment variables are set correctly</li>
+        <li>Ensure Laravel routing is not interfering</li>
+        <li>Check if custom PHP files need special configuration</li>
+    </ol>
+</body>
+</html>
