@@ -49,26 +49,80 @@ Route::post('/contactar', [PublicoController::class, 'contactar'])->name('public
 // Ruta para manejar favoritos
 Route::post('/favorito', [PublicoController::class, 'toggleFavorito'])->name('publico.favorito');
 
-// Rutas de diagnóstico para Railway (solo en producción)
+// Rutas de diagnóstico para Railway
 Route::get('/railway-debug', function () {
-    ob_start();
-    include base_path('railway-debug.php');
-    $content = ob_get_clean();
-    return response($content)->header('Content-Type', 'text/html');
+    try {
+        ob_start();
+        include base_path('railway-debug.php');
+        $content = ob_get_clean();
+        return response($content)->header('Content-Type', 'text/html');
+    } catch (Exception $e) {
+        return response('<h1>Error al cargar railway-debug.php</h1><p>' . $e->getMessage() . '</p>', 500);
+    }
 });
 
 Route::get('/test-db-connection', function () {
-    ob_start();
-    include base_path('test-db-connection.php');
-    $content = ob_get_clean();
-    return response($content)->header('Content-Type', 'text/html');
+    try {
+        ob_start();
+        include base_path('test-db-connection.php');
+        $content = ob_get_clean();
+        return response($content)->header('Content-Type', 'text/html');
+    } catch (Exception $e) {
+        return response('<h1>Error al cargar test-db-connection.php</h1><p>' . $e->getMessage() . '</p>', 500);
+    }
 });
 
 Route::get('/railway-laravel-check', function () {
-    ob_start();
-    include base_path('railway-laravel-check.php');
-    $content = ob_get_clean();
-    return response($content)->header('Content-Type', 'text/html');
+    try {
+        ob_start();
+        include base_path('railway-laravel-check.php');
+        $content = ob_get_clean();
+        return response($content)->header('Content-Type', 'text/html');
+    } catch (Exception $e) {
+        return response('<h1>Error al cargar railway-laravel-check.php</h1><p>' . $e->getMessage() . '</p>', 500);
+    }
+});
+
+// Ruta de diagnóstico simple integrada
+Route::get('/railway-status', function () {
+    $html = '<html><head><title>Estado de Railway</title><style>body{font-family:Arial,sans-serif;margin:40px;} .success{color:green;} .error{color:red;} .warning{color:orange;}</style></head><body>';
+    $html .= '<h1>🚂 Estado de Railway - Laravel</h1>';
+    
+    // Verificar variables de entorno
+    $html .= '<h2>Variables de Entorno:</h2><ul>';
+    $vars = ['APP_KEY', 'APP_ENV', 'DB_CONNECTION', 'DB_HOST', 'DB_PORT', 'DB_DATABASE', 'DB_USERNAME'];
+    foreach ($vars as $var) {
+        $value = env($var, 'NO DEFINIDA');
+        $class = $value !== 'NO DEFINIDA' ? 'success' : 'error';
+        $display = $var === 'DB_PASSWORD' ? '[OCULTA]' : $value;
+        $html .= "<li class='{$class}'>{$var}: {$display}</li>";
+    }
+    $html .= '</ul>';
+    
+    // Test de conexión a base de datos
+    $html .= '<h2>Conexión a Base de Datos:</h2>';
+    try {
+        \DB::connection()->getPdo();
+        $html .= '<p class="success">✅ Conexión exitosa a la base de datos</p>';
+        
+        // Verificar tablas
+        $tables = \DB::select('SELECT table_name FROM information_schema.tables WHERE table_schema = \'public\'');
+        $html .= '<p class="success">✅ Tablas encontradas: ' . count($tables) . '</p>';
+    } catch (Exception $e) {
+        $html .= '<p class="error">❌ Error de conexión: ' . $e->getMessage() . '</p>';
+    }
+    
+    $html .= '<h2>Información del Sistema:</h2><ul>';
+    $html .= '<li>PHP Version: ' . PHP_VERSION . '</li>';
+    $html .= '<li>Laravel Version: ' . app()->version() . '</li>';
+    $html .= '<li>Environment: ' . app()->environment() . '</li>';
+    $html .= '<li>Timezone: ' . config('app.timezone') . '</li>';
+    $html .= '</ul>';
+    
+    $html .= '<p><small>Generado: ' . now() . '</small></p>';
+    $html .= '</body></html>';
+    
+    return response($html)->header('Content-Type', 'text/html');
 });
 
 // Ruta temporal para depuración de información bancaria
