@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" class="w-full h-full">
+  <!-- Fondo circular con degradado verde -->
+  <defs>
+    <linearGradient id="greenGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#059669;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#047857;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="lightGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6ee7b7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#34d399;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Círculo de fondo -->
+  <circle cx="100" cy="100" r="95" fill="url(#greenGradient)" stroke="#065f46" stroke-width="3"/>
+  
+  <!-- Corazón central -->
+  <path d="M100 140 C85 125, 70 110, 70 95 C70 85, 78 75, 90 75 C95 75, 100 80, 100 80 C100 80, 105 75, 110 75 C122 75, 130 85, 130 95 C130 110, 115 125, 100 140 Z" fill="#ffffff" stroke="#065f46" stroke-width="2"/>
+  
+  <!-- Huella de perro (izquierda) -->
+  <g transform="translate(60,60)">
+    <!-- Almohadilla principal -->
+    <ellipse cx="0" cy="8" rx="8" ry="12" fill="url(#lightGreen)"/>
+    <!-- Dedos -->
+    <circle cx="-8" cy="-2" r="4" fill="url(#lightGreen)"/>
+    <circle cx="-2" cy="-5" r="4" fill="url(#lightGreen)"/>
+    <circle cx="2" cy="-5" r="4" fill="url(#lightGreen)"/>
+    <circle cx="8" cy="-2" r="4" fill="url(#lightGreen)"/>
+  </g>
+  
+  <!-- Huella de gato (derecha) -->
+  <g transform="translate(140,60)">
+    <!-- Almohadilla principal -->
+    <ellipse cx="0" cy="8" rx="6" ry="10" fill="url(#lightGreen)"/>
+    <!-- Dedos -->
+    <circle cx="-6" cy="-2" r="3" fill="url(#lightGreen)"/>
+    <circle cx="-2" cy="-4" r="3" fill="url(#lightGreen)"/>
+    <circle cx="2" cy="-4" r="3" fill="url(#lightGreen)"/>
+    <circle cx="6" cy="-2" r="3" fill="url(#lightGreen)"/>
+  </g>
+  
+  <!-- Casa pequeña (parte inferior) -->
+  <g transform="translate(100,160)">
+    <!-- Base de la casa -->
+    <rect x="-15" y="-5" width="30" height="20" fill="#ffffff" stroke="#065f46" stroke-width="1.5"/>
+    <!-- Techo -->
+    <path d="M-18 -5 L0 -18 L18 -5 Z" fill="url(#lightGreen)" stroke="#065f46" stroke-width="1.5"/>
+    <!-- Puerta -->
+    <rect x="-4" y="5" width="8" height="10" fill="url(#greenGradient)"/>
+    <!-- Ventana -->
+    <circle cx="8" cy="2" r="3" fill="url(#lightGreen)" stroke="#065f46" stroke-width="1"/>
+  </g>
+  
+  <!-- Texto decorativo alrededor -->
+  <path id="circle-text" d="M 100,100 m -85,0 a 85,85 0 1,1 170,0 a 85,85 0 1,1 -170,0" fill="none" stroke="none"/>
+  <text font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#ffffff">
+    <textPath href="#circle-text" startOffset="0%">🐾 MI COMPAÑERO FIEL 🐾</textPath>
+  </text>
+</svg>
