@@ -49,6 +49,28 @@ Route::post('/contactar', [PublicoController::class, 'contactar'])->name('public
 // Ruta para manejar favoritos
 Route::post('/favorito', [PublicoController::class, 'toggleFavorito'])->name('publico.favorito');
 
+// Rutas de diagnóstico para Railway (solo en producción)
+Route::get('/railway-debug', function () {
+    ob_start();
+    include base_path('railway-debug.php');
+    $content = ob_get_clean();
+    return response($content)->header('Content-Type', 'text/html');
+});
+
+Route::get('/test-db-connection', function () {
+    ob_start();
+    include base_path('test-db-connection.php');
+    $content = ob_get_clean();
+    return response($content)->header('Content-Type', 'text/html');
+});
+
+Route::get('/railway-laravel-check', function () {
+    ob_start();
+    include base_path('railway-laravel-check.php');
+    $content = ob_get_clean();
+    return response($content)->header('Content-Type', 'text/html');
+});
+
 // Ruta temporal para depuración de información bancaria
 Route::get('/debug/bank-info', function() {
     // Mostrar todas las fundaciones con su información bancaria
